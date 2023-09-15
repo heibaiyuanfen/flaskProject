@@ -1,5 +1,7 @@
 import os
+
 from flask import Flask
+from flask_socketio import SocketIO
 
 
 def create_app(test_config=None):
@@ -10,7 +12,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
     # 创建数据库
-
+    socketio = SocketIO(app)
     # print(app.instance_path)
     # print(test_config)
     # print(app.config)
@@ -36,6 +38,8 @@ def create_app(test_config=None):
     # a simple page that says hello
     from . import user
     app.register_blueprint(user.bp)
+    from . import chat
+    app.register_blueprint(chat.bp)
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
